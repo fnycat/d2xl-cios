@@ -2,7 +2,7 @@
 DEVKITARM ?=	/opt/devkitARM
 
 # Prefix
-PREFIX	=	$(DEVKITARM)/bin/arm-eabi-
+PREFIX	=	$(DEVKITARM)/bin/arm-none-eabi-
 
 # Executables
 CC	=	$(PREFIX)gcc
@@ -19,7 +19,7 @@ endif
 
 # Flags
 ARCH	=	-mcpu=arm926ej-s -mthumb -mthumb-interwork -mbig-endian
-CFLAGS	=	$(ARCH) -I. -fomit-frame-pointer -Os -Wall -D__TIME__=\"$(BUILD_TIME)\" -D__DATE__=\"$(BUILD_DATE)\" -Wno-builtin-macro-redefined
+CFLAGS	=	$(ARCH) -std=gnu11 -I. -fomit-frame-pointer -Os -Wall -D__TIME__=\"$(BUILD_TIME)\" -D__DATE__=\"$(BUILD_DATE)\" -Wno-builtin-macro-redefined
 CFLAGS2	=	-Wstrict-prototypes -ffunction-sections
 ARFLAGS	=	rcs
 
@@ -47,7 +47,7 @@ OBJS	=	direct_syscalls.o	\
 		tools.o			\
 		usbstorage.o		\
 		vsprintf.o
-		
+
 OBJS2	=	libwbfs/libwbfs.o	\
 		libwbfs/rijndael.o	\
 		libwbfs/wiidisc.o
@@ -55,7 +55,7 @@ OBJS2	=	libwbfs/libwbfs.o	\
 
 $(TARGET).a: $(OBJS) $(OBJS2)
 	@echo -e " AR\t$@"
-	@$(AR) $(ARFLAGS) $@ $(OBJS) $(OBJS2) 
+	@$(AR) $(ARFLAGS) $@ $(OBJS) $(OBJS2)
 
 %.o: %.s
 	@echo -e " CC\t$@"
@@ -72,3 +72,4 @@ libwbfs/%.o: libwbfs/%.c
 clean:
 	@echo -e "Cleaning..."
 	@rm -f $(OBJS) $(OBJS2) $(TARGET).a
+
